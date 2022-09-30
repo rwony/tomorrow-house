@@ -1,6 +1,10 @@
-p {
-  color: red;
-  top: 1;
-  bottom: 10;
-  display: block;
+@import './base/fonts';
+
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
 }
