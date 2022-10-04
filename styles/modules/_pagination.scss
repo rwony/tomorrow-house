@@ -17,6 +17,7 @@
 
     &.page-prev {
       margin-right: 24px;
+
       .ic-chevron {
         transform: rotate(90deg);
       }
@@ -24,6 +25,7 @@
 
     &.page-next {
       margin-left: 24px;
+
       .ic-chevron {
         transform: rotate(-90deg);
       }
