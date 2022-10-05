@@ -99,6 +99,8 @@
       font-weight: 700;
 
       i {
+        position: relative;
+        top: 1px;
         font-size: 16px;
         color: $red;
       }
