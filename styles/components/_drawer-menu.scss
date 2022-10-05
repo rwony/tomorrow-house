@@ -86,7 +86,8 @@
   &-item {
     &.is-active {
       a {
-        color: $blue;
+        font-weight: 700;
+        background-color: $drawer-background;
       }
     }
 
@@ -96,7 +97,7 @@
       width: 100%;
       height: $drawer-menu-list-height;
       padding: 0 12px;
-      font-weight: 700;
+      font-weight: 400;
 
       i {
         position: relative;
