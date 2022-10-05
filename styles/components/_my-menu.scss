@@ -66,8 +66,9 @@
   &-item {
     a,
     button {
-      width: 100%;
       @include flexbox(start);
+      @include text-style(16, $primary);
+      width: 100%;
       height: 44px;
       padding: 8px;
       border-radius: 2px;
