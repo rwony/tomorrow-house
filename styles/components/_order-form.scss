@@ -1,9 +1,13 @@
 .order-form {
   margin-bottom: 40px;
 
-  .order-inputs {
+  .order-inputs,
+  .order-checkouts,
+  .order-summary {
     margin-bottom: 20px;
+  }
 
+  .order-inputs {
     .select-group {
       &:not(:last-child) {
         margin-bottom: 8px;
@@ -11,9 +15,14 @@
     }
   }
 
+  .order-checkouts {
+    .checkout-item:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+
   .order-summary {
     @include flexbox(between);
-    margin-bottom: 20px;
 
     dt {
       @include text-style(13, $dark);
