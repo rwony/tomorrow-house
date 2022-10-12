@@ -1,7 +1,5 @@
 // scss-lint:disable all
 .product-tab {
-  $grid-margin: $sm-margin + $gutter / 2;
-
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: $gnb-height-sm + $lnb-height-sm;
