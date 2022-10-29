@@ -14,5 +14,24 @@ function closeOrderModal() {
   orderModalOverlay.classList.remove('is-active')
 }
 
+function checkBookmark() {
+  const [icon, countSpan] = this.children
+  const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
+
+  let newCount = count
+  if (this.classList.contains('is-active')) {
+    icon.classList = 'ic-bookmark'
+    newCount--
+  } else {
+    icon.classList = 'ic-bookmark-filled'
+    newCount++
+  }
+
+  this.classList.toggle('is-active')
+  countSpan.setAttribute('aria-label', `북마크 ${newCount.toLocaleString()}회`)
+  countSpan.textContent = newCount.toLocaleString()
+}
+
 orderCtaBuyButton.addEventListener('click', openOrderModal)
 orderModalOverlay.addEventListener('click', closeOrderModal)
+orderCtaBookmarkButton.addEventListener('click', checkBookmark)
