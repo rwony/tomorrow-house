@@ -6,19 +6,25 @@ const gnbSearchHistoryList = gnbSearchHistory.querySelector('ol')
 const deleteAllButton = gnbSearchHistory.querySelector(
   '.search-history-header button'
 )
+const deleteButton = gnbSearchHistory.querySelectorAll('.delete-button')
 
-function closeGnbSearchHistory(e) {
+function closeGnbSearchHistory() {
+  gnbSearchHistory.classList.remove('is-active')
+  window.removeEventListener('click', closeGnbSearchHistory)
+}
+
+function closeGnbSearchHistoryOnClickingOutside(e) {
   if (!gnbSearch.contains(e.target)) {
-    gnbSearchHistory.classList.remove('is-active')
-    window.removeEventListener('click', closeGnbSearchHistory)
+    closeGnbSearchHistory()
   }
 }
 
 function openGnbSearchHistory() {
   if (gnbSearchHistoryList.children.length !== 0) {
     // 최근 검색어가 없는 경우에는 검색 내역을 보여주지 않도록 한다.
+
     if (!gnbSearchHistory.classList.contains('is-active')) {
-      window.addEventListener('click', closeGnbSearchHistory)
+      window.addEventListener('click', closeGnbSearchHistoryOnClickingOutside)
     }
     gnbSearchHistory.classList.toggle('is-active')
   }
@@ -26,8 +32,21 @@ function openGnbSearchHistory() {
 
 function deleteAllSearchHistoryItems() {
   gnbSearchHistoryList.innerHTML = ''
-  gnbSearchHistory.classList.remove('is-active')
+  closeGnbSearchHistory()
+}
+
+function deleteSearchHistoryItem(e) {
+  e.stopPropagation() // 이벤트 전파 막기
+
+  gnbSearchHistoryList.removeChild(this.parentNode)
+  if (gnbSearchHistoryList.children.length === 0) {
+    closeGnbSearchHistory()
+  }
 }
 
 gnbSearchInput.addEventListener('focus', openGnbSearchHistory)
 deleteAllButton.addEventListener('click', deleteAllSearchHistoryItems)
+
+deleteButton.forEach((button) => {
+  button.addEventListener('click', deleteSearchHistoryItem)
+})
