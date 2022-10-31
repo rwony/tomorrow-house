@@ -4,7 +4,6 @@ const sectionHeaderIconButton = document.querySelector(
 
 function showFullSection() {
   const section = this.parentNode.parentNode
-  console.log(this)
   section.classList.toggle('is-open')
 }
 
