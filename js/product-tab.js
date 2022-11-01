@@ -1,8 +1,21 @@
+const TOP_HEADER_DESKTOP = 80 + 50 + 54
+const TOP_HEADER_MOBILE = 50 + 40 + 40
+
 const productTab = document.querySelector('.product-tab')
 const productTabButtonList = productTab.querySelectorAll('button')
 
-const TOP_HEADER_DESKTOP = 80 + 50 + 54
-const TOP_HEADER_MOBILE = 50 + 40 + 40
+const productTablPanelIdList = [
+  'product-spec',
+  'product-review',
+  'product-inquiry',
+  'product-shipment',
+  'product-recommendation',
+]
+const productTablPanelList = productTablPanelIdList.map((panelId) => {
+  const tabPanel = document.querySelector(`#${panelId}`)
+  return tabPanel
+})
+const productTablPanelPositionMap = {}
 
 let currentActiveTab = productTab.querySelector('.is-active')
 
@@ -34,7 +47,23 @@ function scrollTabPanel() {
   window.scrollBy({ top: scrollAmount, behavior: 'smooth' })
 }
 
+/*
+ * name: detectTablPanelPosition()
+ * desc: 각각의 tabPanel의 y축 위치를 찾고, productTablPanelPositionMap 객체에 그 값을 업데이트한다.
+ */
+function detectTablPanelPosition() {
+  productTablPanelList.forEach((panel) => {
+    const id = panel.getAttribute('id')
+    const position = window.scrollY + panel.getBoundingClientRect().top
+
+    productTablPanelPositionMap[id] = position
+  })
+}
+
 productTabButtonList.forEach((button) => {
   button.addEventListener('click', toggleActiveTab)
   button.addEventListener('click', scrollTabPanel)
 })
+
+window.addEventListener('load', detectTablPanelPosition)
+window.addEventListener('resize', detectTablPanelPosition)
