@@ -18,6 +18,7 @@ const productTablPanelList = productTablPanelIdList.map((panelId) => {
 const productTablPanelPositionMap = {}
 
 let currentActiveTab = productTab.querySelector('.is-active')
+let disableUpdating = false
 
 /*
  * name: toggleActiveTab()
@@ -27,9 +28,15 @@ function toggleActiveTab() {
   const tabItem = this.parentNode
 
   if (currentActiveTab !== tabItem) {
+    disableUpdating = true
+
     tabItem.classList.add('is-active')
     currentActiveTab.classList.remove('is-active')
     currentActiveTab = tabItem
+
+    setTimeout(() => {
+      disableUpdating = false
+    }, 1000)
   }
 }
 
@@ -57,6 +64,8 @@ function detectTablPanelPosition() {
     const position = window.scrollY + panel.getBoundingClientRect().top
     productTablPanelPositionMap[id] = position
   })
+
+  updateActiveTabOnScroll()
 }
 
 /*
@@ -64,6 +73,10 @@ function detectTablPanelPosition() {
  * desc: 스크롤 위치에 따라서 activeTab 업데이트
  */
 function updateActiveTabOnScroll() {
+  if (disableUpdating) {
+    return
+  }
+
   const scrolledAmount =
     window.scrollY +
     (window.innerWidth >= 768 ? TOP_HEADER_DESKTOP + 80 : TOP_HEADER_MOBILE + 8)
@@ -83,12 +96,23 @@ function updateActiveTabOnScroll() {
     newActiveTab = productTabButtonList[0] // 상품정보
   }
 
+  // 페이지를 끝까지 스크롤 한 경우
+  // 태블릿 이하의 사이즈인 경우 footer의 margin-bottom 56을 더해줘야 한다.
+  const bodyHeight =
+    document.body.offsetHeight + (window.innerHeight < 1200 ? 56 : 0)
+
+  if (window.scrollY + window.innerHeight === bodyHeight) {
+    newActiveTab = productTabButtonList[4] // 추천
+  }
+
   if (newActiveTab) {
     newActiveTab = newActiveTab.parentNode
 
     if (newActiveTab !== currentActiveTab) {
       newActiveTab.classList.add('is-active')
-      currentActiveTab.classList.remove('is-active')
+      if (currentActiveTab !== null) {
+        currentActiveTab.classList.remove('is-active')
+      }
       currentActiveTab = newActiveTab
     }
   }
