@@ -9,8 +9,11 @@ const bookmarkToastCloseButtonList = document.querySelectorAll(
 )
 
 // bookmark-toast lg-only
-const bookmarkToastButtonDesktop = document.querySelector(
+const bookmarkButtonDesktop = document.querySelector(
   '.product-info .button-group.lg-only .bookmark-button'
+)
+const bookmarkFloatingOrderFormButtonDesktop = document.querySelector(
+  '.floating-order-form .button-group .bookmark-button'
 )
 
 const orderModal = document.querySelector('.order-form-modal')
@@ -27,27 +30,42 @@ function closeOrderModal() {
 }
 
 function checkBookmark() {
-  const toastList = [orderCtaBookmarkButton, bookmarkToastButtonDesktop]
+  const toastList = [
+    orderCtaBookmarkButton,
+    bookmarkButtonDesktop,
+    bookmarkFloatingOrderFormButtonDesktop,
+  ]
 
-  toastList.forEach((toast) => {
+  toastList.forEach((toast, idx) => {
     const [icon, countSpan] = toast.children
-    const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
 
-    let newCount = count
-    if (toast.classList.contains('is-active')) {
-      icon.classList = 'ic-bookmark'
-      newCount--
+    if (idx !== 2) {
+      const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
+
+      let newCount = count
+      if (toast.classList.contains('is-active')) {
+        icon.classList = 'ic-bookmark'
+        newCount--
+      } else {
+        icon.classList = 'ic-bookmark-filled'
+        newCount++
+      }
+
+      toast.classList.toggle('is-active')
+      countSpan.setAttribute(
+        'aria-label',
+        `북마크 ${newCount.toLocaleString()}회`
+      )
+      countSpan.textContent = newCount.toLocaleString()
     } else {
-      icon.classList = 'ic-bookmark-filled'
-      newCount++
-    }
+      toast.classList.toggle('is-active')
 
-    toast.classList.toggle('is-active')
-    countSpan.setAttribute(
-      'aria-label',
-      `북마크 ${newCount.toLocaleString()}회`
-    )
-    countSpan.textContent = newCount.toLocaleString()
+      if (!toast.classList.contains('is-active')) {
+        icon.classList = 'ic-bookmark'
+      } else {
+        icon.classList = 'ic-bookmark-filled'
+      }
+    }
   })
 
   showBookmarkToast()
@@ -59,9 +77,7 @@ function checkBookmark() {
  */
 function showBookmarkToast() {
   const item =
-    window.innerWidth < 1200
-      ? orderCtaBookmarkButton
-      : bookmarkToastButtonDesktop
+    window.innerWidth < 1200 ? orderCtaBookmarkButton : bookmarkButtonDesktop
 
   if (item.classList.contains('is-active')) {
     bookmarkToast.classList.add('is-active')
@@ -91,4 +107,5 @@ bookmarkToastCloseButtonList.forEach((button) => {
   button.addEventListener('click', closeBookmarkToast)
 })
 
-bookmarkToastButtonDesktop.addEventListener('click', checkBookmark)
+bookmarkButtonDesktop.addEventListener('click', checkBookmark)
+bookmarkFloatingOrderFormButtonDesktop.addEventListener('click', checkBookmark)
