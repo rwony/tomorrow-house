@@ -3,26 +3,27 @@
 
   @include flexbox(between);
   position: fixed;
-  bottom: 0;
-  left: 0;
+  bottom: 20px;
+  left: 50%;
   z-index: $bookmark-toast-level;
-  // display: none;
-  width: 100%;
+  width: 95%;
   height: 56px;
-  padding-right: $grid-margin;
+  max-width: 500px;
+  padding-right: 8px;
   padding-left: $close-button-size;
-  background-color: $white;
-  transform: translate3d(0, 100%, 0);
+  background-color: $background-dark;
+  border-radius: 4px;
+  transform: translateX(-50%) translate3d(0, 76px, 0);
   box-shadow: $popup-reversed-shadow;
   transition: transform 300ms ease-in-out;
 
   &.is-active {
     display: flex;
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(-50%, 0, 0);
   }
 
   .bookmark-title {
-    @include text-style(13, $primary);
+    @include text-style(13, $white);
     font-weight: 400;
   }
 
@@ -42,6 +43,11 @@
 
   .button-group {
     @include flexbox(end);
+
+    a,
+    button {
+      color: $blue;
+    }
 
     .btn-32 {
       @include text-style(13);
