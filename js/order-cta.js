@@ -8,6 +8,11 @@ const bookmarkToastCloseButtonList = document.querySelectorAll(
   '.bookmark-toast .close-button'
 )
 
+// bookmark-toast lg-only
+const bookmarkToastButtonDesktop = document.querySelector(
+  '.product-info .button-group.lg-only .bookmark-button'
+)
+
 const orderModal = document.querySelector('.order-form-modal')
 const orderModalOverlay = document.querySelector('.overlay')
 
@@ -22,21 +27,28 @@ function closeOrderModal() {
 }
 
 function checkBookmark() {
-  const [icon, countSpan] = this.children
-  const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
+  const toastList = [orderCtaBookmarkButton, bookmarkToastButtonDesktop]
 
-  let newCount = count
-  if (this.classList.contains('is-active')) {
-    icon.classList = 'ic-bookmark'
-    newCount--
-  } else {
-    icon.classList = 'ic-bookmark-filled'
-    newCount++
-  }
+  toastList.forEach((toast) => {
+    const [icon, countSpan] = toast.children
+    const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
 
-  this.classList.toggle('is-active')
-  countSpan.setAttribute('aria-label', `북마크 ${newCount.toLocaleString()}회`)
-  countSpan.textContent = newCount.toLocaleString()
+    let newCount = count
+    if (toast.classList.contains('is-active')) {
+      icon.classList = 'ic-bookmark'
+      newCount--
+    } else {
+      icon.classList = 'ic-bookmark-filled'
+      newCount++
+    }
+
+    toast.classList.toggle('is-active')
+    countSpan.setAttribute(
+      'aria-label',
+      `북마크 ${newCount.toLocaleString()}회`
+    )
+    countSpan.textContent = newCount.toLocaleString()
+  })
 
   showBookmarkToast()
 }
@@ -46,7 +58,12 @@ function checkBookmark() {
  * desc: 북마크 여부에 따른 스크랩 모달을 보여준다.
  */
 function showBookmarkToast() {
-  if (orderCtaBookmarkButton.classList.contains('is-active')) {
+  const item =
+    window.innerWidth < 1200
+      ? orderCtaBookmarkButton
+      : bookmarkToastButtonDesktop
+
+  if (item.classList.contains('is-active')) {
     bookmarkToast.classList.add('is-active')
     bookmarkToastRemove.classList.remove('is-active')
   } else {
@@ -73,3 +90,5 @@ orderCtaBookmarkButton.addEventListener('click', checkBookmark)
 bookmarkToastCloseButtonList.forEach((button) => {
   button.addEventListener('click', closeBookmarkToast)
 })
+
+bookmarkToastButtonDesktop.addEventListener('click', checkBookmark)
