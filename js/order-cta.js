@@ -29,44 +29,55 @@ function closeOrderModal() {
   orderModalOverlay.classList.remove('is-active')
 }
 
-function checkBookmark() {
-  const toastList = [
-    orderCtaBookmarkButton,
-    bookmarkButtonDesktop,
-    bookmarkFloatingOrderFormButtonDesktop,
-  ]
+/*
+ * name: checkBookmarkFloatingOrderForm()
+ * desc: 데스크탑 버전의 floting-order-form에 있는 북마크를 클릭할 경우 아이콘 클래스를 변경하고, checkBookmark 함수를 호출해서 다른 북마크 여부도 동기화한다.
+ */
+function checkBookmarkFloatingOrderForm() {
+  const bookmarkButton = bookmarkFloatingOrderFormButtonDesktop
+  const icon = bookmarkButton.children[0]
 
-  toastList.forEach((toast, idx) => {
+  if (bookmarkButton.classList.contains('is-active')) {
+    icon.classList = 'ic-bookmark'
+  } else {
+    icon.classList = 'ic-bookmark-filled'
+  }
+
+  bookmarkButton.classList.toggle('is-active')
+
+  if (this !== window) {
+    checkBookmark()
+  }
+}
+
+function checkBookmark() {
+  const toastList = [orderCtaBookmarkButton, bookmarkButtonDesktop]
+
+  toastList.forEach((toast) => {
     const [icon, countSpan] = toast.children
 
-    if (idx !== 2) {
-      const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
+    const count = parseInt(countSpan.innerHTML.replaceAll(',', ''))
 
-      let newCount = count
-      if (toast.classList.contains('is-active')) {
-        icon.classList = 'ic-bookmark'
-        newCount--
-      } else {
-        icon.classList = 'ic-bookmark-filled'
-        newCount++
-      }
-
-      toast.classList.toggle('is-active')
-      countSpan.setAttribute(
-        'aria-label',
-        `북마크 ${newCount.toLocaleString()}회`
-      )
-      countSpan.textContent = newCount.toLocaleString()
+    let newCount = count
+    if (toast.classList.contains('is-active')) {
+      icon.classList = 'ic-bookmark'
+      newCount--
     } else {
-      toast.classList.toggle('is-active')
-
-      if (!toast.classList.contains('is-active')) {
-        icon.classList = 'ic-bookmark'
-      } else {
-        icon.classList = 'ic-bookmark-filled'
-      }
+      icon.classList = 'ic-bookmark-filled'
+      newCount++
     }
+
+    toast.classList.toggle('is-active')
+    countSpan.setAttribute(
+      'aria-label',
+      `북마크 ${newCount.toLocaleString()}회`
+    )
+    countSpan.textContent = newCount.toLocaleString()
   })
+
+  if (this !== window) {
+    checkBookmarkFloatingOrderForm()
+  }
 
   showBookmarkToast()
 }
@@ -108,4 +119,7 @@ bookmarkToastCloseButtonList.forEach((button) => {
 })
 
 bookmarkButtonDesktop.addEventListener('click', checkBookmark)
-bookmarkFloatingOrderFormButtonDesktop.addEventListener('click', checkBookmark)
+bookmarkFloatingOrderFormButtonDesktop.addEventListener(
+  'click',
+  checkBookmarkFloatingOrderForm
+)
