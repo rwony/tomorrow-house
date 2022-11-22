@@ -11,14 +11,14 @@
 @import './base/reset';
 @import './base/globals';
 
-@import './maxins/text-style';
-@import './maxins/responsive';
-@import './maxins/positions';
-@import './maxins/flexbox';
-@import './maxins/scrollbar';
-@import './maxins/start-rating';
-@import './maxins/line-clamp';
-@import './maxins/truncate';
+@import './mixins/text-style';
+@import './mixins/responsive';
+@import './mixins/positions';
+@import './mixins/flexbox';
+@import './mixins/scrollbar';
+@import './mixins/start-rating';
+@import './mixins/line-clamp';
+@import './mixins/truncate';
 
 @import './modules/tags';
 @import './modules/avatars';
